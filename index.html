@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GroceryMart - Online Grocery & Daily Needs</title>
+    <title>GroceryMart</title>
     <style>
         * {
             margin: 0;
@@ -937,7 +937,7 @@
             }
 
             // Simulate service availability check
-            const serviceableAreas = ['110001', '110002', '110003', '110004', '110005', '400001', '400002', '560001', '560002', '560003', '800001'];
+            const serviceableAreas = ['335702', '335703', '110003', '110004', '110005', '400001', '400002', '560001', '560002', '560003', '800001'];
             const available = serviceableAreas.includes(pincode);
 
             if (available) {
@@ -947,7 +947,7 @@
                 closeModal('pincodeModal');
                 renderHome();
             } else {
-                alert('Service not available in this area. Try: 110001, 400001, 560001, 800001');
+                alert('Service not available in this area. Try: 335702, 335703, 560001, 800001');
             }
         }
 
