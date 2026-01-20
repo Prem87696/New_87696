@@ -967,7 +967,7 @@
         function renderHome() {
             const home = document.getElementById('homeContent');
             home.innerHTML = `
-                <section class="offers-section">
+                <div class="offers-section">
                     <h2>🎉 Special Offers</h2>
                     <div class="offers-grid">
                         <div class="offer-card">
@@ -987,9 +987,9 @@
                             <p>Same Day Delivery</p>
                         </div>
                     </div>
-                </section>
+                </div>
 
-                <section class="offers-section">
+                <div class="offers-section">
                     <h2>🛒 Shop by Category</h2>
                     <div class="categories-grid">
                         <div class="category-card" onclick="filterByCategory('vegetables')">
@@ -1017,9 +1017,9 @@
                             <div class="category-name">All Items</div>
                         </div>
                     </div>
-                </section>
+                </div>
 
-                <section class="offers-section">
+                <div class="offers-section">
                     <h2>🔥 Trending Now</h2>
                     <div class="products-grid">
                         ${appState.products.slice(0, 8).map(product => `
@@ -1036,7 +1036,7 @@
                             </div>
                         `).join('')}
                     </div>
-                </section>
+                </div>
             `;
         }
 
