@@ -1,1658 +1,1661 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GroceryMart</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GroceryMart</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        background-color: #f5f5f5;
+        color: #333;
+        line-height: 1.6;
+    }
+    .product-image img {
+         width: -webkit-fill-available;
+         height: 150px;
+}
+    /* Header Styles */
+    header {
+        background: linear-gradient(135deg, #1a73e8 0%, #155cc0 100%);
+        color: white;
+        padding: 1rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .header-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .logo {
+        font-size: 1.8rem;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .header-actions {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        flex: 1;
+        justify-content: flex-end;
+    }
+
+    .pincode-display {
+        
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .pincode-display:hover {
+        background: rgba(255, 255, 255, 0.3);
+    }
+
+    .cart-icon {
+        position: relative;
+        cursor: pointer;
+        font-size: 1.5rem;
+    }
+
+    .cart-count {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background: #ff5722;
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+    }
+
+    /* Navigation */
+    nav {
+        background: white;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .nav-menu {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        list-style: none;
+        overflow-x: auto;
+    }
+
+    .nav-menu li {
+        flex: 0 0 auto;
+    }
+
+    .nav-menu button {
+        background: none;
+        border: none;
+        padding: 1rem;
+        cursor: pointer;
+        font-size: 0.95rem;
+        color: #666;
+        border-bottom: 3px solid transparent;
+        transition: all 0.3s;
+    }
+
+    .nav-menu button.active {
+        color: #1a73e8;
+        border-bottom-color: #1a73e8;
+    }
+
+    .nav-menu button:hover {
+        color: #1a73e8;
+    }
+
+    /* Search Bar */
+    .search-container {
+        max-width: 1200px;
+        margin: 1rem auto;
+        padding: 0 1rem;
+    }
+
+    .search-bar {
+        display: flex;
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    .search-bar input {
+        flex: 1;
+        padding: 0.75rem 1rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+    }
+
+    .search-bar button {
+        padding: 0.75rem 1.5rem;
+        background: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background 0.3s;
+    }
+
+    .search-bar button:hover {
+        background: #155cc0;
+    }
+
+    /* Sections */
+    section {
+        display: none;
+    }
+
+    section.active {
+        display: block;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1rem;
+    }
+
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal.active {
+        display: flex;
+    }
+
+    .modal-content {
+        background: white;
+        border-radius: 8px;
+        padding: 2rem;
+        max-width: 500px;
+        width: 90%;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-header {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .close-btn {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #666;
+    }
+
+    /* Pincode Modal */
+    .pincode-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .pincode-form input {
+        padding: 0.75rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+    }
+
+    .pincode-form button {
+        padding: 0.75rem;
+        background: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+    .service-status {
+        padding: 1rem;
+        border-radius: 4px;
+        margin-top: 1rem;
+        text-align: center;
+    }
+
+    .service-available {
+        background: #e8f5e9;
+        color: #2e7d32;
+    }
+
+    .service-unavailable {
+        background: #ffebee;
+        color: #c62828;
+    }
+
+    /* Products Grid */
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+        margin: 1rem 0;
+    }
+
+    .product-card {
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s, transform 0.3s;
+        cursor: pointer;
+    }
+
+    .product-card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
+    }
+
+    .product-image {
+        overflow: hidden;
+        width: 100%;
+        height: 150px;
+        background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        border-bottom: 1px solid #eee;
+    }
+
+    .product-info {
+        padding: 1rem;
+    }
+
+    .product-name {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+    }
+
+    .product-price {
+        color: #1a73e8;
+        font-size: 1.25rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    .product-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .product-actions button {
+        flex: 1;
+        padding: 0.5rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background 0.3s;
+    }
+
+    .add-to-cart-btn {
+        background: #34a853;
+        color: white;
+    }
+
+    .add-to-cart-btn:hover {
+        background: #2d8e47;
+    }
+
+    .view-details-btn {
+        background: #f0f0f0;
+        color: #333;
+    }
+
+    .view-details-btn:hover {
+        background: #e0e0e0;
+    }
+
+    /* Offers Section */
+    .offers-section {
+        background: white;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin: 1rem 0;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .offers-section h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .offers-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 1rem;
+    }
+
+    .offer-card {
+        background: linear-gradient(135deg, #fff9c4 0%, #ffe082 100%);
+        padding: 1rem;
+        border-radius: 8px;
+        text-align: center;
+    }
+
+    .offer-card h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .offer-card p {
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    /* Cart Items */
+    .cart-items-list {
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .cart-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        border-bottom: 1px solid #eee;
+    }
+
+    .cart-item:last-child {
+        border-bottom: none;
+    }
+
+    .cart-item-info {
+        flex: 1;
+    }
+
+    .cart-item-name {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .cart-item-price {
+        color: #1a73e8;
+        font-weight: bold;
+    }
+
+    .cart-item-actions {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    .quantity-selector {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 0.25rem;
+    }
+
+    .quantity-selector button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .remove-btn {
+        background: #ff5252;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .remove-btn:hover {
+        background: #e53935;
+    }
+
+    /* Cart Summary */
+    .cart-summary {
+        background: white;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-top: 1rem;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.75rem;
+        font-size: 0.95rem;
+    }
+
+    .summary-row.total {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: #1a73e8;
+        border-top: 1px solid #eee;
+        padding-top: 0.75rem;
+        margin-top: 0.75rem;
+    }
+
+    /* Form Styles */
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+    }
+
+    .form-group textarea {
+        resize: vertical;
+        min-height: 80px;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    /* Buttons */
+    .btn-primary {
+        background: #1a73e8;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 4px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .btn-primary:hover {
+        background: #155cc0;
+    }
+
+    .btn-secondary {
+        background: #f0f0f0;
+        color: #333;
+        padding: 0.75rem 1.5rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .btn-secondary:hover {
+        background: #e0e0e0;
+    }
+
+    /* Categories Grid */
+    .categories-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 1rem;
+        margin: 1rem 0;
+    }
+
+    .category-card {
+        background: white;
+        border-radius: 8px;
+        padding: 1rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .category-card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
+    }
+
+    .category-emoji {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .category-name {
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    /* Product Detail */
+    .product-detail {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        background: white;
+        border-radius: 8px;
+        padding: 2rem;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-detail-image {
+        width: 100%;
+        height: 400px;
+        background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 5rem;
+    }
+
+    .product-detail-info h1 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .product-detail-price {
+        font-size: 2rem;
+        color: #1a73e8;
+        font-weight: bold;
+        margin-bottom: 1rem;
+    }
+
+    .product-detail-desc {
+        color: #666;
+        margin-bottom: 1.5rem;
+        line-height: 1.8;
+    }
+
+    .product-detail-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+
+    .quantity-input {
+        width: 80px;
+        padding: 0.75rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    /* Order Card */
+    .order-card {
+        background: white;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .order-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 1rem;
+    }
+
+    .order-id {
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+
+    .order-status {
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+
+    .status-delivered {
+        background: #e8f5e9;
+        color: #2e7d32;
+    }
+
+    .status-shipped {
+        background: #e3f2fd;
+        color: #1565c0;
+    }
+
+    .status-processing {
+        background: #fff3e0;
+        color: #e65100;
+    }
+
+    /* Footer */
+    footer {
+        background: #333;
+        color: white;
+        padding: 2rem 1rem;
+        margin-top: 2rem;
+    }
+
+    .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .footer-section h3 {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+    }
+
+    .footer-section ul {
+        list-style: none;
+    }
+
+    .footer-section ul li {
+        margin-bottom: 0.5rem;
+    }
+
+    .footer-section a {
+        color: #ccc;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .footer-section a:hover {
+        color: white;
+    }
+
+    .footer-bottom {
+        text-align: center;
+        border-top: 1px solid #555;
+        padding-top: 1rem;
+        color: #aaa;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .logo {
+font-size: 1.2rem;
+font-weight: bold;
+cursor: pointer;
+}
+        .product-detail {
+            grid-template-columns: 1fr;
         }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background-color: #f5f5f5;
-            color: #333;
-            line-height: 1.6;
-        }
-
-        /* Header Styles */
-        header {
-            background: linear-gradient(135deg, #1a73e8 0%, #155cc0 100%);
-            color: white;
-            padding: 1rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+        .products-grid {
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
         }
 
         .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            flex: 1;
-            justify-content: flex-end;
-        }
-
-        .pincode-display {
             
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background 0.3s;
+            text-align: center;
         }
 
-        .pincode-display:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .cart-icon {
-            position: relative;
-            cursor: pointer;
-            font-size: 1.5rem;
-        }
-
-        .cart-count {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: #ff5722;
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.75rem;
-        }
-
-        /* Navigation */
-        nav {
-            background: white;
-            border-bottom: 1px solid #e0e0e0;
-        }
+       
 
         .nav-menu {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            list-style: none;
-            overflow-x: auto;
-        }
-
-        .nav-menu li {
-            flex: 0 0 auto;
-        }
-
-        .nav-menu button {
-            background: none;
-            border: none;
-            padding: 1rem;
-            cursor: pointer;
-            font-size: 0.95rem;
-            color: #666;
-            border-bottom: 3px solid transparent;
-            transition: all 0.3s;
-        }
-
-        .nav-menu button.active {
-            color: #1a73e8;
-            border-bottom-color: #1a73e8;
-        }
-
-        .nav-menu button:hover {
-            color: #1a73e8;
-        }
-
-        /* Search Bar */
-        .search-container {
-            max-width: 1200px;
-            margin: 1rem auto;
-            padding: 0 1rem;
+            flex-wrap: wrap;
         }
 
         .search-bar {
-            display: flex;
-            gap: 0.5rem;
-            width: 100%;
-        }
-
-        .search-bar input {
-            flex: 1;
-            padding: 0.75rem 1rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 1rem;
-        }
-
-        .search-bar button {
-            padding: 0.75rem 1.5rem;
-            background: #1a73e8;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: background 0.3s;
-        }
-
-        .search-bar button:hover {
-            background: #155cc0;
-        }
-
-        /* Sections */
-        section {
-            display: none;
-        }
-
-        section.active {
-            display: block;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem;
-        }
-
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: 8px;
-            padding: 2rem;
-            max-width: 500px;
-            width: 90%;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .modal-header {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #666;
-        }
-
-        /* Pincode Modal */
-        .pincode-form {
-            display: flex;
             flex-direction: column;
-            gap: 1rem;
-        }
-
-        .pincode-form input {
-            padding: 0.75rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 1rem;
-        }
-
-        .pincode-form button {
-            padding: 0.75rem;
-            background: #1a73e8;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .service-status {
-            padding: 1rem;
-            border-radius: 4px;
-            margin-top: 1rem;
-            text-align: center;
-        }
-
-        .service-available {
-            background: #e8f5e9;
-            color: #2e7d32;
-        }
-
-        .service-unavailable {
-            background: #ffebee;
-            color: #c62828;
-        }
-
-        /* Products Grid */
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1rem;
-            margin: 1rem 0;
-        }
-
-        .product-card {
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-            transition: box-shadow 0.3s, transform 0.3s;
-            cursor: pointer;
-        }
-
-        .product-card:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            transform: translateY(-2px);
-        }
-
-        .product-image {
-            overflow: hidden;
-            width: 100%;
-            height: 150px;
-            background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            border-bottom: 1px solid #eee;
-        }
-
-        .product-info {
-            padding: 1rem;
-        }
-
-        .product-name {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            font-size: 0.95rem;
-        }
-
-        .product-price {
-            color: #1a73e8;
-            font-size: 1.25rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-
-        .product-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .product-actions button {
-            flex: 1;
-            padding: 0.5rem;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: background 0.3s;
-        }
-
-        .add-to-cart-btn {
-            background: #34a853;
-            color: white;
-        }
-
-        .add-to-cart-btn:hover {
-            background: #2d8e47;
-        }
-
-        .view-details-btn {
-            background: #f0f0f0;
-            color: #333;
-        }
-
-        .view-details-btn:hover {
-            background: #e0e0e0;
-        }
-
-        /* Offers Section */
-        .offers-section {
-            background: white;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin: 1rem 0;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .offers-section h2 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .offers-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 1rem;
-        }
-
-        .offer-card {
-            background: linear-gradient(135deg, #fff9c4 0%, #ffe082 100%);
-            padding: 1rem;
-            border-radius: 8px;
-            text-align: center;
-        }
-
-        .offer-card h3 {
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .offer-card p {
-            font-size: 0.9rem;
-            color: #666;
-        }
-
-        /* Cart Items */
-        .cart-items-list {
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem;
-            border-bottom: 1px solid #eee;
-        }
-
-        .cart-item:last-child {
-            border-bottom: none;
-        }
-
-        .cart-item-info {
-            flex: 1;
-        }
-
-        .cart-item-name {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .cart-item-price {
-            color: #1a73e8;
-            font-weight: bold;
-        }
-
-        .cart-item-actions {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-        }
-
-        .quantity-selector {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 0.25rem;
-        }
-
-        .quantity-selector button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .remove-btn {
-            background: #ff5252;
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .remove-btn:hover {
-            background: #e53935;
-        }
-
-        /* Cart Summary */
-        .cart-summary {
-            background: white;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-top: 1rem;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.75rem;
-            font-size: 0.95rem;
-        }
-
-        .summary-row.total {
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: #1a73e8;
-            border-top: 1px solid #eee;
-            padding-top: 0.75rem;
-            margin-top: 0.75rem;
-        }
-
-        /* Form Styles */
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 1rem;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 80px;
         }
 
         .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        /* Buttons */
-        .btn-primary {
-            background: #1a73e8;
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 4px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .btn-primary:hover {
-            background: #155cc0;
-        }
-
-        .btn-secondary {
-            background: #f0f0f0;
-            color: #333;
-            padding: 0.75rem 1.5rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .btn-secondary:hover {
-            background: #e0e0e0;
-        }
-
-        /* Categories Grid */
-        .categories-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            gap: 1rem;
-            margin: 1rem 0;
-        }
-
-        .category-card {
-            background: white;
-            border-radius: 8px;
-            padding: 1rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .category-card:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            transform: translateY(-2px);
-        }
-
-        .category-emoji {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .category-name {
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        /* Product Detail */
-        .product-detail {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            background: white;
-            border-radius: 8px;
-            padding: 2rem;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .product-detail-image {
-            width: 100%;
-            height: 400px;
-            background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 5rem;
-        }
-
-        .product-detail-info h1 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        .product-detail-price {
-            font-size: 2rem;
-            color: #1a73e8;
-            font-weight: bold;
-            margin-bottom: 1rem;
-        }
-
-        .product-detail-desc {
-            color: #666;
-            margin-bottom: 1.5rem;
-            line-height: 1.8;
+            grid-template-columns: 1fr;
         }
 
         .product-detail-actions {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
+            flex-direction: column;
         }
 
-        .quantity-input {
-            width: 80px;
-            padding: 0.75rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+        .cart-item {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
         }
+    }
 
-        /* Order Card */
-        .order-card {
-            background: white;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: #999;
+    }
+
+    .empty-state-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+    }
+
+    .empty-state h2 {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Message Box */
+    .message {
+        padding: 1rem;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+    }
+
+    .message.success {
+        background: #e8f5e9;
+        color: #2e7d32;
+        border: 1px solid #c8e6c9;
+    }
+
+    .message.error {
+        background: #ffebee;
+        color: #c62828;
+        border: 1px solid #ffcdd2;
+    }
+
+    .message.info {
+        background: #e3f2fd;
+        color: #1565c0;
+        border: 1px solid #bbdefb;
+    }
+</style>
+
+<script>
+    // App State
+    let appState = {
+        pincode: null,
+        currentPage: 'home',
+        cart: [],
+        searchQuery: '',
+        selectedCategory: 'all',
+        products: [],
+        currentProduct: null,
+        user: null
+    };
+
+    // Initialize
+    window.addEventListener('DOMContentLoaded', () => {
+        loadFromLocalStorage();
+        initializeProducts();
+        showPage('home');
+        updateCartCount();
+        checkPincode();
+    });
+
+    // Load data from localStorage
+    function loadFromLocalStorage() {
+        const saved = localStorage.getItem('appState');
+        if (saved) {
+            const savedState = JSON.parse(saved);
+            appState.pincode = savedState.pincode;
+            appState.cart = savedState.cart || [];
+            appState.user = savedState.user;
         }
+    }
 
-        .order-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 1rem;
-        }
+    // Save to localStorage
+    function saveToLocalStorage() {
+        localStorage.setItem('appState', JSON.stringify({
+            pincode: appState.pincode,
+            cart: appState.cart,
+            user: appState.user
+        }));
+    }
 
-        .order-id {
-            font-weight: 600;
-            font-size: 1.1rem;
-        }
+    // Initialize Products Database
+    function initializeProducts() {
+        appState.products = [
+            // Vegetables
+            { id: 1, name: 'Tomato', price: 40, category: 'vegetables', emoji: '<img src="https://img.freepik.com/premium-photo/red-ripe-tomato-white-isolated_269543-324.jpg?uid=R124775528&ga=GA1.1.43226144.1768924043&semt=ais_user_personalization&w=740&q=80">', desc: 'Fresh red tomatoes' },
+            { id: 2, name: 'Onion', price: 30, category: 'vegetables', emoji: '🧅', desc: 'Fresh onions' },
+            { id: 3, name: 'Potato', price: 25, category: 'vegetables', emoji: '🥔', desc: 'Fresh potatoes' },
+            { id: 4, name: 'Carrot', price: 35, category: 'vegetables', emoji: '🥕', desc: 'Fresh carrots' },
+            { id: 5, name: 'Broccoli', price: 60, category: 'vegetables', emoji: '🥦', desc: 'Fresh broccoli' },
+            { id: 6, name: 'Spinach', price: 50, category: 'vegetables', emoji: '🥬', desc: 'Fresh spinach' },
+            // Fruits
+            { id: 7, name: 'Apple', price: 100, category: 'fruits', emoji: '🍎', desc: 'Fresh apples' },
+            { id: 8, name: 'Banana', price: 45, category: 'fruits', emoji: '🍌', desc: 'Fresh bananas' },
+            { id: 9, name: 'Orange', price: 60, category: 'fruits', emoji: '🍊', desc: 'Fresh oranges' },
+            { id: 10, name: 'Mango', price: 120, category: 'fruits', emoji: '🥭', desc: 'Fresh mangoes' },
+            { id: 11, name: 'Watermelon', price: 150, category: 'fruits', emoji: '🍉', desc: 'Fresh watermelon' },
+            { id: 12, name: 'Strawberry', price: 80, category: 'fruits', emoji: '🍓', desc: 'Fresh strawberries' },
+            // Dairy
+            { id: 13, name: 'Milk', price: 55, category: 'dairy', emoji: '🥛', desc: '1L Fresh Milk' },
+            { id: 14, name: 'Yogurt', price: 40, category: 'dairy', emoji: '🥛', desc: 'Fresh yogurt' },
+            { id: 15, name: 'Cheese', price: 150, category: 'dairy', emoji: '🧀', desc: 'Cheddar cheese' },
+            { id: 16, name: 'Butter', price: 180, category: 'dairy', emoji: '🧈', desc: 'Pure butter' },
+            { id: 17, name: 'Paneer', price: 200, category: 'dairy', emoji: '🧀', desc: 'Fresh paneer' },
+            { id: 18, name: 'Ghee', price: 300, category: 'dairy', emoji: '🧈', desc: 'Pure ghee' },
+            // Grocery
+            { id: 19, name: 'Rice', price: 400, category: 'grocery', emoji: '🍚', desc: '1kg Rice' },
+            { id: 20, name: 'Flour', price: 35, category: 'grocery', emoji: '🌾', desc: '1kg Flour' },
+            { id: 21, name: 'Dal', price: 90, category: 'grocery', emoji: '🫘', desc: '1kg Dal' },
+            { id: 22, name: 'Oil', price: 180, category: 'grocery', emoji: '🫗', desc: '1L Cooking Oil' },
+            { id: 23, name: 'Salt', price: 20, category: 'grocery', emoji: '🧂', desc: 'Table salt' },
+            { id: 24, name: 'Sugar', price: 45, category: 'grocery', emoji: '🍯', desc: '1kg Sugar' },
+            // Beverages
+            { id: 25, name: 'Tea', price: 150, category: 'beverages', emoji: '🫖', desc: 'Premium tea' },
+            { id: 26, name: 'Coffee', price: 200, category: 'beverages', emoji: '☕', desc: 'Premium coffee' },
+            { id: 27, name: 'Juice', price: 80, category: 'beverages', emoji: '🧃', desc: 'Fresh juice' },
+            { id: 28, name: 'Water Bottle', price: 50, category: 'beverages', emoji: '💧', desc: '1L Water' },
+            { id: 29, name: 'Soft Drink', price: 40, category: 'beverages', emoji: '🥤', desc: '500ml Soda' },
+            { id: 30, name: 'Coconut Water', price: 60, category: 'beverages', emoji: '🥥', desc: 'Fresh coconut water' }
+        ];
+    }
 
-        .order-status {
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-
-        .status-delivered {
-            background: #e8f5e9;
-            color: #2e7d32;
-        }
-
-        .status-shipped {
-            background: #e3f2fd;
-            color: #1565c0;
-        }
-
-        .status-processing {
-            background: #fff3e0;
-            color: #e65100;
-        }
-
-        /* Footer */
-        footer {
-            background: #333;
-            color: white;
-            padding: 2rem 1rem;
-            margin-top: 2rem;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .footer-section h3 {
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
-        }
-
-        .footer-section ul {
-            list-style: none;
-        }
-
-        .footer-section ul li {
-            margin-bottom: 0.5rem;
-        }
-
-        .footer-section a {
-            color: #ccc;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .footer-section a:hover {
-            color: white;
-        }
-
-        .footer-bottom {
-            text-align: center;
-            border-top: 1px solid #555;
-            padding-top: 1rem;
-            color: #aaa;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .logo {
-    font-size: 1.2rem;
-    font-weight: bold;
-    cursor: pointer;
-}
-            .product-detail {
-                grid-template-columns: 1fr;
-            }
-
-            .products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            }
-
-            .header-content {
-                
-                text-align: center;
-            }
-
-           
-
-            .nav-menu {
-                flex-wrap: wrap;
-            }
-
-            .search-bar {
-                flex-direction: column;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-
-            .product-detail-actions {
-                flex-direction: column;
-            }
-
-            .cart-item {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.5rem;
-            }
-        }
-
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 3rem 1rem;
-            color: #999;
-        }
-
-        .empty-state-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-        }
-
-        .empty-state h2 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Message Box */
-        .message {
-            padding: 1rem;
-            border-radius: 4px;
-            margin-bottom: 1rem;
-        }
-
-        .message.success {
-            background: #e8f5e9;
-            color: #2e7d32;
-            border: 1px solid #c8e6c9;
-        }
-
-        .message.error {
-            background: #ffebee;
-            color: #c62828;
-            border: 1px solid #ffcdd2;
-        }
-
-        .message.info {
-            background: #e3f2fd;
-            color: #1565c0;
-            border: 1px solid #bbdefb;
-        }
-    </style>
-
-    <script>
-        // App State
-        let appState = {
-            pincode: null,
-            currentPage: 'home',
-            cart: [],
-            searchQuery: '',
-            selectedCategory: 'all',
-            products: [],
-            currentProduct: null,
-            user: null
-        };
-
-        // Initialize
-        window.addEventListener('DOMContentLoaded', () => {
-            loadFromLocalStorage();
-            initializeProducts();
-            showPage('home');
-            updateCartCount();
-            checkPincode();
-        });
-
-        // Load data from localStorage
-        function loadFromLocalStorage() {
-            const saved = localStorage.getItem('appState');
-            if (saved) {
-                const savedState = JSON.parse(saved);
-                appState.pincode = savedState.pincode;
-                appState.cart = savedState.cart || [];
-                appState.user = savedState.user;
-            }
-        }
-
-        // Save to localStorage
-        function saveToLocalStorage() {
-            localStorage.setItem('appState', JSON.stringify({
-                pincode: appState.pincode,
-                cart: appState.cart,
-                user: appState.user
-            }));
-        }
-
-        // Initialize Products Database
-        function initializeProducts() {
-            appState.products = [
-                // Vegetables
-                { id: 1, name: 'Tomato', price: 40, category: 'vegetables', emoji: '<img src="https://img.freepik.com/premium-photo/red-ripe-tomato-white-isolated_269543-324.jpg?uid=R124775528&ga=GA1.1.43226144.1768924043&semt=ais_user_personalization&w=740&q=80">', desc: 'Fresh red tomatoes' },
-                { id: 2, name: 'Onion', price: 30, category: 'vegetables', emoji: '🧅', desc: 'Fresh onions' },
-                { id: 3, name: 'Potato', price: 25, category: 'vegetables', emoji: '🥔', desc: 'Fresh potatoes' },
-                { id: 4, name: 'Carrot', price: 35, category: 'vegetables', emoji: '🥕', desc: 'Fresh carrots' },
-                { id: 5, name: 'Broccoli', price: 60, category: 'vegetables', emoji: '🥦', desc: 'Fresh broccoli' },
-                { id: 6, name: 'Spinach', price: 50, category: 'vegetables', emoji: '🥬', desc: 'Fresh spinach' },
-                // Fruits
-                { id: 7, name: 'Apple', price: 100, category: 'fruits', emoji: '🍎', desc: 'Fresh apples' },
-                { id: 8, name: 'Banana', price: 45, category: 'fruits', emoji: '🍌', desc: 'Fresh bananas' },
-                { id: 9, name: 'Orange', price: 60, category: 'fruits', emoji: '🍊', desc: 'Fresh oranges' },
-                { id: 10, name: 'Mango', price: 120, category: 'fruits', emoji: '🥭', desc: 'Fresh mangoes' },
-                { id: 11, name: 'Watermelon', price: 150, category: 'fruits', emoji: '🍉', desc: 'Fresh watermelon' },
-                { id: 12, name: 'Strawberry', price: 80, category: 'fruits', emoji: '🍓', desc: 'Fresh strawberries' },
-                // Dairy
-                { id: 13, name: 'Milk', price: 55, category: 'dairy', emoji: '🥛', desc: '1L Fresh Milk' },
-                { id: 14, name: 'Yogurt', price: 40, category: 'dairy', emoji: '🥛', desc: 'Fresh yogurt' },
-                { id: 15, name: 'Cheese', price: 150, category: 'dairy', emoji: '🧀', desc: 'Cheddar cheese' },
-                { id: 16, name: 'Butter', price: 180, category: 'dairy', emoji: '🧈', desc: 'Pure butter' },
-                { id: 17, name: 'Paneer', price: 200, category: 'dairy', emoji: '🧀', desc: 'Fresh paneer' },
-                { id: 18, name: 'Ghee', price: 300, category: 'dairy', emoji: '🧈', desc: 'Pure ghee' },
-                // Grocery
-                { id: 19, name: 'Rice', price: 400, category: 'grocery', emoji: '🍚', desc: '1kg Rice' },
-                { id: 20, name: 'Flour', price: 35, category: 'grocery', emoji: '🌾', desc: '1kg Flour' },
-                { id: 21, name: 'Dal', price: 90, category: 'grocery', emoji: '🫘', desc: '1kg Dal' },
-                { id: 22, name: 'Oil', price: 180, category: 'grocery', emoji: '🫗', desc: '1L Cooking Oil' },
-                { id: 23, name: 'Salt', price: 20, category: 'grocery', emoji: '🧂', desc: 'Table salt' },
-                { id: 24, name: 'Sugar', price: 45, category: 'grocery', emoji: '🍯', desc: '1kg Sugar' },
-                // Beverages
-                { id: 25, name: 'Tea', price: 150, category: 'beverages', emoji: '🫖', desc: 'Premium tea' },
-                { id: 26, name: 'Coffee', price: 200, category: 'beverages', emoji: '☕', desc: 'Premium coffee' },
-                { id: 27, name: 'Juice', price: 80, category: 'beverages', emoji: '🧃', desc: 'Fresh juice' },
-                { id: 28, name: 'Water Bottle', price: 50, category: 'beverages', emoji: '💧', desc: '1L Water' },
-                { id: 29, name: 'Soft Drink', price: 40, category: 'beverages', emoji: '🥤', desc: '500ml Soda' },
-                { id: 30, name: 'Coconut Water', price: 60, category: 'beverages', emoji: '🥥', desc: 'Fresh coconut water' }
-            ];
-        }
-
-        // Check Pincode on Load
-        function checkPincode() {
-            if (!appState.pincode) {
-                showModal('pincodeModal');
-            } else {
-                updatePincodeDisplay();
-            }
-        }
-
-        // Show/Hide Pages
-        function showPage(pageName) {
-            document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-            document.getElementById(pageName + 'Section').classList.add('active');
-            
-            document.querySelectorAll('.nav-menu button').forEach(b => b.classList.remove('active'));
-            const activeBtn = document.querySelector(`[data-page="${pageName}"]`);
-            if (activeBtn) activeBtn.classList.add('active');
-            
-            appState.currentPage = pageName;
-            
-            if (pageName === 'home') renderHome();
-            if (pageName === 'products') renderProducts();
-            if (pageName === 'cart') renderCart();
-            if (pageName === 'checkout') renderCheckout();
-            if (pageName === 'account') renderAccount();
-            if (pageName === 'orders') renderOrders();
-            if (pageName === 'productDetail') renderProductDetail();
-        }
-
-        // Modal Functions
-        function showModal(modalId) {
-            document.getElementById(modalId).classList.add('active');
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
-        }
-
-        // Pincode Functions
-        function setPincode() {
-            const input = document.getElementById('pincodeInput');
-            const pincode = input.value.trim();
-            
-            if (!/^\d{6}$/.test(pincode)) {
-                alert('Please enter a valid 6-digit pincode');
-                return;
-            }
-
-            // Simulate service availability check
-            const serviceableAreas = ['335702', '335703', '110003', '110004', '110005', '400001', '400002', '560001', '560002', '560003', '800001'];
-            const available = serviceableAreas.includes(pincode);
-
-            if (available) {
-                appState.pincode = pincode;
-                saveToLocalStorage();
-                updatePincodeDisplay();
-                closeModal('pincodeModal');
-                renderHome();
-            } else {
-                alert('Service not available in this area. Try: 335702, 335703, 560001, 800001');
-            }
-        }
-
-        function updatePincodeDisplay() {
-            const display = document.querySelector('.pincode-display');
-            if (display) {
-                display.textContent = `📍 ${appState.pincode}`;
-            }
-        }
-
-        function changePincode() {
+    // Check Pincode on Load
+    function checkPincode() {
+        if (!appState.pincode) {
             showModal('pincodeModal');
+        } else {
+            updatePincodeDisplay();
+        }
+    }
+
+    // Show/Hide Pages
+    function showPage(pageName) {
+        document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+        document.getElementById(pageName + 'Section').classList.add('active');
+        
+        document.querySelectorAll('.nav-menu button').forEach(b => b.classList.remove('active'));
+        const activeBtn = document.querySelector(`[data-page="${pageName}"]`);
+        if (activeBtn) activeBtn.classList.add('active');
+        
+        appState.currentPage = pageName;
+        
+        if (pageName === 'home') renderHome();
+        if (pageName === 'products') renderProducts();
+        if (pageName === 'cart') renderCart();
+        if (pageName === 'checkout') renderCheckout();
+        if (pageName === 'account') renderAccount();
+        if (pageName === 'orders') renderOrders();
+        if (pageName === 'productDetail') renderProductDetail();
+    }
+
+    // Modal Functions
+    function showModal(modalId) {
+        document.getElementById(modalId).classList.add('active');
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).classList.remove('active');
+    }
+
+    // Pincode Functions
+    function setPincode() {
+        const input = document.getElementById('pincodeInput');
+        const pincode = input.value.trim();
+        
+        if (!/^\d{6}$/.test(pincode)) {
+            alert('Please enter a valid 6-digit pincode');
+            return;
         }
 
-        // Product Functions
-        function renderHome() {
-            const home = document.getElementById('homeContent');
-            home.innerHTML = `
-                <div class="offers-section">
-                    <h2>🎉 Special Offers</h2>
-                    <div class="offers-grid">
-                        <div class="offer-card">
-                            <h3>Fresh Produce</h3>
-                            <p>Up to 30% Off</p>
-                        </div>
-                        <div class="offer-card">
-                            <h3>Dairy Items</h3>
-                            <p>Buy 2 Get 1 Free</p>
-                        </div>
-                        <div class="offer-card">
-                            <h3>Grocery</h3>
-                            <p>Flat ₹100 Off</p>
-                        </div>
-                        <div class="offer-card">
-                            <h3>Fast Delivery</h3>
-                            <p>Same Day Delivery</p>
-                        </div>
-                    </div>
-                </div>
+        // Simulate service availability check
+        const serviceableAreas = ['335702', '335703', '110003', '110004', '110005', '400001', '400002', '560001', '560002', '560003', '800001'];
+        const available = serviceableAreas.includes(pincode);
 
-                <div class="offers-section">
-                    <h2>🛒 Shop by Category</h2>
-                    <div class="categories-grid">
-                        <div class="category-card" onclick="filterByCategory('vegetables')">
-                            <div class="category-emoji">🥕</div>
-                            <div class="category-name">Vegetables</div>
-                        </div>
-                        <div class="category-card" onclick="filterByCategory('fruits')">
-                            <div class="category-emoji">🍎</div>
-                            <div class="category-name">Fruits</div>
-                        </div>
-                        <div class="category-card" onclick="filterByCategory('dairy')">
-                            <div class="category-emoji">🥛</div>
-                            <div class="category-name">Dairy</div>
-                        </div>
-                        <div class="category-card" onclick="filterByCategory('grocery')">
-                            <div class="category-emoji">🍚</div>
-                            <div class="category-name">Grocery</div>
-                        </div>
-                        <div class="category-card" onclick="filterByCategory('beverages')">
-                            <div class="category-emoji">☕</div>
-                            <div class="category-name">Beverages</div>
-                        </div>
-                        <div class="category-card" onclick="filterByCategory('all')">
-                            <div class="category-emoji">⭐</div>
-                            <div class="category-name">All Items</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="offers-section">
-                    <h2>🔥 Trending Now</h2>
-                    <div class="products-grid">
-                        ${appState.products.slice(0, 8).map(product => `
-                            <div class="product-card">
-                                <div class="product-image">${product.emoji}</div>
-                                <div class="product-info">
-                                    <div class="product-name">${product.name}</div>
-                                    <div class="product-price">₹${product.price}</div>
-                                    <div class="product-actions">
-                                        <button class="view-details-btn" onclick="viewProduct(${product.id})">View</button>
-                                        <button class="add-to-cart-btn" onclick="addToCart(${product.id})">Add</button>
-                                    </div>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-        }
-
-        function filterByCategory(category) {
-            appState.selectedCategory = category;
-            showPage('products');
-        }
-
-        function renderProducts() {
-            const products = appState.selectedCategory === 'all' 
-                ? appState.products 
-                : appState.products.filter(p => p.category === appState.selectedCategory);
-
-            const section = document.getElementById('productsSection');
-            section.innerHTML = `
-                <div class="container">
-                    <h1>${appState.selectedCategory === 'all' ? 'All Products' : appState.selectedCategory.charAt(0).toUpperCase() + appState.selectedCategory.slice(1)}</h1>
-                    
-                    <div class="products-grid">
-                        ${products.map(product => `
-                            <div class="product-card">
-                                <div class="product-image">${product.emoji}</div>
-                                <div class="product-info">
-                                    <div class="product-name">${product.name}</div>
-                                    <div class="product-price">₹${product.price}</div>
-                                    <div class="product-actions">
-                                        <button class="view-details-btn" onclick="viewProduct(${product.id})">View</button>
-                                        <button class="add-to-cart-btn" onclick="addToCart(${product.id})">Add</button>
-                                    </div>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-        }
-
-        function viewProduct(productId) {
-            appState.currentProduct = appState.products.find(p => p.id === productId);
-            showPage('productDetail');
-        }
-
-        function renderProductDetail() {
-            if (!appState.currentProduct) return;
-            const product = appState.currentProduct;
-            const section = document.getElementById('productDetailSection');
-            
-            section.innerHTML = `
-                <div class="container">
-                    <button class="btn-secondary" onclick="showPage('products')" style="margin-bottom: 1rem;">← Back</button>
-                    <div class="product-detail">
-                        <div class="product-detail-image">${product.emoji}</div>
-                        <div class="product-detail-info">
-                            <h1>${product.name}</h1>
-                            <div class="product-detail-price">₹${product.price}</div>
-                            <div class="product-detail-desc">${product.desc}</div>
-                            
-                            <div class="product-detail-actions">
-                                <input type="number" id="detailQuantity" class="quantity-input" value="1" min="1" max="100">
-                                <button class="btn-primary" onclick="addToCartFromDetail()">Add to Cart</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function addToCartFromDetail() {
-            const qty = parseInt(document.getElementById('detailQuantity').value);
-            for (let i = 0; i < qty; i++) {
-                addToCart(appState.currentProduct.id);
-            }
-            showPage('cart');
-        }
-
-        // Cart Functions
-        function addToCart(productId) {
-            const product = appState.products.find(p => p.id === productId);
-            const existing = appState.cart.find(item => item.id === productId);
-            
-            if (existing) {
-                existing.qty += 1;
-            } else {
-                appState.cart.push({...product, qty: 1});
-            }
-            
+        if (available) {
+            appState.pincode = pincode;
             saveToLocalStorage();
-            updateCartCount();
-            showNotification('Added to cart!');
+            updatePincodeDisplay();
+            closeModal('pincodeModal');
+            renderHome();
+        } else {
+            alert('Service not available in this area. Try: 335702, 335703, 560001, 800001');
         }
+    }
 
-        function removeFromCart(productId) {
-            appState.cart = appState.cart.filter(item => item.id !== productId);
-            saveToLocalStorage();
-            updateCartCount();
-            renderCart();
+    function updatePincodeDisplay() {
+        const display = document.querySelector('.pincode-display');
+        if (display) {
+            display.textContent = `📍 ${appState.pincode}`;
         }
+    }
 
-        function updateQuantity(productId, delta) {
-            const item = appState.cart.find(i => i.id === productId);
-            if (item) {
-                item.qty += delta;
-                if (item.qty <= 0) {
-                    removeFromCart(productId);
-                } else {
-                    saveToLocalStorage();
-                    renderCart();
-                }
-            }
-        }
+    function changePincode() {
+        showModal('pincodeModal');
+    }
 
-        function updateCartCount() {
-            const count = appState.cart.reduce((sum, item) => sum + item.qty, 0);
-            const cartCount = document.querySelector('.cart-count');
-            if (cartCount) {
-                cartCount.textContent = count;
-                cartCount.style.display = count > 0 ? 'flex' : 'none';
-            }
-        }
-
-        function renderCart() {
-            const section = document.getElementById('cartSection');
-            const total = appState.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-
-            if (appState.cart.length === 0) {
-                section.innerHTML = `
-                    <div class="container">
-                        <div class="empty-state">
-                            <div class="empty-state-icon">🛒</div>
-                            <h2>Your cart is empty</h2>
-                            <p>Add items to get started!</p>
-                            <button class="btn-primary" onclick="showPage('home')" style="margin-top: 1rem;">Continue Shopping</button>
-                        </div>
+    // Product Functions
+    function renderHome() {
+        const home = document.getElementById('homeContent');
+        home.innerHTML = `
+            <div class="offers-section">
+                <h2>🎉 Special Offers</h2>
+                <div class="offers-grid">
+                    <div class="offer-card">
+                        <h3>Fresh Produce</h3>
+                        <p>Up to 30% Off</p>
                     </div>
-                `;
-                return;
-            }
-
-            section.innerHTML = `
-                <div class="container">
-                    <h1>Shopping Cart</h1>
-                    <div class="cart-items-list">
-                        ${appState.cart.map(item => `
-                            <div class="cart-item">
-                                <div style="font-size: 2rem; margin-right: 1rem;">${item.emoji}</div>
-                                <div class="cart-item-info">
-                                    <div class="cart-item-name">${item.name}</div>
-                                    <div class="cart-item-price">₹${item.price} each</div>
-                                </div>
-                                <div class="cart-item-actions">
-                                    <div class="quantity-selector">
-                                        <button onclick="updateQuantity(${item.id}, -1)">−</button>
-                                        <span>${item.qty}</span>
-                                        <button onclick="updateQuantity(${item.id}, 1)">+</button>
-                                    </div>
-                                    <strong style="margin: 0 1rem;">₹${item.price * item.qty}</strong>
-                                    <button class="remove-btn" onclick="removeFromCart(${item.id})">Remove</button>
-                                </div>
-                            </div>
-                        `).join('')}
+                    <div class="offer-card">
+                        <h3>Dairy Items</h3>
+                        <p>Buy 2 Get 1 Free</p>
                     </div>
-
-                    <div class="cart-summary">
-                        <div class="summary-row">
-                            <span>Subtotal:</span>
-                            <span>₹${total}</span>
-                        </div>
-                        <div class="summary-row">
-                            <span>Delivery:</span>
-                            <span>₹0 (Free)</span>
-                        </div>
-                        <div class="summary-row total">
-                            <span>Total:</span>
-                            <span>₹${total}</span>
-                        </div>
-                        <button class="btn-primary" onclick="showPage('checkout')" style="width: 100%; margin-top: 1rem; padding: 1rem;">Proceed to Checkout</button>
+                    <div class="offer-card">
+                        <h3>Grocery</h3>
+                        <p>Flat ₹100 Off</p>
+                    </div>
+                    <div class="offer-card">
+                        <h3>Fast Delivery</h3>
+                        <p>Same Day Delivery</p>
                     </div>
                 </div>
-            `;
-        }
+            </div>
 
-        // Checkout Functions
-        function renderCheckout() {
-            const total = appState.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-            const section = document.getElementById('checkoutSection');
-
-            section.innerHTML = `
-                <div class="container">
-                    <h1>Checkout</h1>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-                        <div>
-                            <h2>Delivery Address</h2>
-                            <form onsubmit="submitOrder(event)">
-                                <div class="form-group">
-                                    <label>Full Name</label>
-                                    <input type="text" id="fullName" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Phone Number</label>
-                                    <input type="tel" id="phone" pattern="[0-9]{10}" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Address</label>
-                                    <textarea id="address" required></textarea>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label>City</label>
-                                        <input type="text" id="city" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Pincode</label>
-                                        <input type="text" id="pincode" value="${appState.pincode}" readonly>
-                                    </div>
-                                </div>
-
-                                <h2 style="margin-top: 2rem;">Delivery Option</h2>
-                                <div class="form-group">
-                                    <label>
-                                        <input type="radio" name="delivery" value="home" checked> Home Delivery
-                                    </label>
-                                    <label>
-                                        <input type="radio" name="delivery" value="store"> Store Pickup
-                                    </label>
-                                </div>
-
-                                <button type="submit" class="btn-primary" style="width: 100%; padding: 1rem; margin-top: 1rem;">Place Order</button>
-                            </form>
-                        </div>
-
-                        <div>
-                            <h2>Order Summary</h2>
-                            <div class="cart-summary">
-                                ${appState.cart.map(item => `
-                                    <div class="summary-row">
-                                        <span>${item.name} x${item.qty}</span>
-                                        <span>₹${item.price * item.qty}</span>
-                                    </div>
-                                `).join('')}
-                                <div class="summary-row total">
-                                    <span>Total Amount</span>
-                                    <span>₹${total}</span>
-                                </div>
-                            </div>
-                        </div>
+            <div class="offers-section">
+                <h2>🛒 Shop by Category</h2>
+                <div class="categories-grid">
+                    <div class="category-card" onclick="filterByCategory('vegetables')">
+                        <div class="category-emoji">🥕</div>
+                        <div class="category-name">Vegetables</div>
+                    </div>
+                    <div class="category-card" onclick="filterByCategory('fruits')">
+                        <div class="category-emoji">🍎</div>
+                        <div class="category-name">Fruits</div>
+                    </div>
+                    <div class="category-card" onclick="filterByCategory('dairy')">
+                        <div class="category-emoji">🥛</div>
+                        <div class="category-name">Dairy</div>
+                    </div>
+                    <div class="category-card" onclick="filterByCategory('grocery')">
+                        <div class="category-emoji">🍚</div>
+                        <div class="category-name">Grocery</div>
+                    </div>
+                    <div class="category-card" onclick="filterByCategory('beverages')">
+                        <div class="category-emoji">☕</div>
+                        <div class="category-name">Beverages</div>
+                    </div>
+                    <div class="category-card" onclick="filterByCategory('all')">
+                        <div class="category-emoji">⭐</div>
+                        <div class="category-name">All Items</div>
                     </div>
                 </div>
-            `;
-        }
+            </div>
 
-        function submitOrder(event) {
-            event.preventDefault();
-            
-            const name = document.getElementById('fullName').value;
-            const phone = document.getElementById('phone').value;
-            const address = document.getElementById('address').value;
-            const city = document.getElementById('city').value;
-            const delivery = document.querySelector('input[name="delivery"]:checked').value;
-
-            const order = {
-                id: 'ORD' + Date.now(),
-                date: new Date().toLocaleDateString(),
-                items: appState.cart,
-                total: appState.cart.reduce((sum, item) => sum + (item.price * item.qty), 0),
-                status: 'processing',
-                customer: { name, phone, address, city, delivery }
-            };
-
-            let orders = JSON.parse(localStorage.getItem('orders') || '[]');
-            orders.push(order);
-            localStorage.setItem('orders', JSON.stringify(orders));
-
-            appState.cart = [];
-            saveToLocalStorage();
-            updateCartCount();
-
-            showNotification('Order placed successfully!');
-            setTimeout(() => showPage('orders'), 1000);
-        }
-
-        // Account Functions
-        function renderAccount() {
-            const section = document.getElementById('accountSection');
-            section.innerHTML = `
-                <div class="container">
-                    <h1>My Account</h1>
-                    <div style="background: white; border-radius: 8px; padding: 2rem; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);">
-                        <h2 style="margin-bottom: 1rem;">Profile Information</h2>
-                        <form onsubmit="updateProfile(event)">
-                            <div class="form-group">
-                                <label>Full Name</label>
-                                <input type="text" id="accountName" value="${appState.user?.name || ''}" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Email</label>
-                                <input type="email" id="accountEmail" value="${appState.user?.email || ''}" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Phone</label>
-                                <input type="tel" id="accountPhone" value="${appState.user?.phone || ''}" pattern="[0-9]{10}" required>
-                            </div>
-                            <button type="submit" class="btn-primary">Save Changes</button>
-                        </form>
-
-                        <h2 style="margin-top: 2rem; margin-bottom: 1rem;">Saved Addresses</h2>
-                        <div id="savedAddresses" style="background: #f5f5f5; padding: 1rem; border-radius: 4px;">
-                            <p>No saved addresses yet.</p>
-                        </div>
-
-                        <button class="btn-secondary" style="margin-top: 1rem;" onclick="logout()">Logout</button>
-                    </div>
-                </div>
-            `;
-        }
-
-        function updateProfile(event) {
-            event.preventDefault();
-            appState.user = {
-                name: document.getElementById('accountName').value,
-                email: document.getElementById('accountEmail').value,
-                phone: document.getElementById('accountPhone').value
-            };
-            saveToLocalStorage();
-            showNotification('Profile updated!');
-        }
-
-        function logout() {
-            appState.user = null;
-            saveToLocalStorage();
-            showPage('home');
-            showNotification('Logged out!');
-        }
-
-        // Orders Functions
-        function renderOrders() {
-            const section = document.getElementById('ordersSection');
-            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
-
-            if (orders.length === 0) {
-                section.innerHTML = `
-                    <div class="container">
-                        <div class="empty-state">
-                            <div class="empty-state-icon">📦</div>
-                            <h2>No orders yet</h2>
-                            <p>Start shopping to place an order!</p>
-                            <button class="btn-primary" onclick="showPage('home')" style="margin-top: 1rem;">Continue Shopping</button>
-                        </div>
-                    </div>
-                `;
-                return;
-            }
-
-            section.innerHTML = `
-                <div class="container">
-                    <h1>My Orders</h1>
-                    ${orders.reverse().map(order => `
-                        <div class="order-card">
-                            <div class="order-header">
-                                <div>
-                                    <div class="order-id">${order.id}</div>
-                                    <div style="color: #666; font-size: 0.9rem;">Ordered on ${order.date}</div>
+            <div class="offers-section">
+                <h2>🔥 Trending Now</h2>
+                <div class="products-grid">
+                    ${appState.products.slice(0, 8).map(product => `
+                        <div class="product-card">
+                            <div class="product-image">${product.emoji}</div>
+                            <div class="product-info">
+                                <div class="product-name">${product.name}</div>
+                                <div class="product-price">₹${product.price}</div>
+                                <div class="product-actions">
+                                    <button class="view-details-btn" onclick="viewProduct(${product.id})">View</button>
+                                    <button class="add-to-cart-btn" onclick="addToCart(${product.id})">Add</button>
                                 </div>
-                                <span class="order-status status-${order.status}">${order.status.charAt(0).toUpperCase() + order.status.slice(1)}</span>
-                            </div>
-                            <div style="margin-bottom: 1rem;">
-                                ${order.items.map(item => `
-                                    <div style="display: flex; justify-content: space-between; padding: 0.5rem 0;">
-                                        <span>${item.name} x${item.qty}</span>
-                                        <span>₹${item.price * item.qty}</span>
-                                    </div>
-                                `).join('')}
-                            </div>
-                            <div style="border-top: 1px solid #eee; padding-top: 1rem; font-weight: bold; display: flex; justify-content: space-between;">
-                                <span>Total:</span>
-                                <span>₹${order.total}</span>
-                            </div>
-                            <div style="margin-top: 1rem; font-size: 0.9rem; color: #666;">
-                                Delivery to: ${order.customer.address}, ${order.customer.city}
                             </div>
                         </div>
                     `).join('')}
                 </div>
-            `;
-        }
+            </div>
+        `;
+    }
 
-        // Search Function
-        function search() {
-    const query = document.getElementById('searchInput').value.trim().toLowerCase();
-    if (!query) return;
+    function filterByCategory(category) {
+        appState.selectedCategory = category;
+        showPage('products');
+    }
 
-    appState.searchQuery = query;
+    function renderProducts() {
+        const products = appState.selectedCategory === 'all' 
+            ? appState.products 
+            : appState.products.filter(p => p.category === appState.selectedCategory);
 
-    const filtered = appState.products.filter(p =>
-        p.name.toLowerCase().includes(query)
-    );
-
-    const section = document.getElementById('productsSection');
-
-    section.innerHTML = `
-        <div class="container">
-            <h1>Search Results for "${query}"</h1>
-
-            ${
-                filtered.length === 0
-                ? `<div class="empty-state">
-                        <div class="empty-state-icon">🔍</div>
-                        <h2>No products found</h2>
-                        <p>Try a different keyword</p>
-                   </div>`
-                : `<div class="products-grid">
-                        ${filtered.map(product => `
-                            <div class="product-card">
-                                <div class="product-image">${product.emoji}</div>
-                                <div class="product-info">
-                                    <div class="product-name">${product.name}</div>
-                                    <div class="product-price">₹${product.price}</div>
-                                    <div class="product-actions">
-                                        <button class="view-details-btn" onclick="viewProduct(${product.id})">View</button>
-                                        <button class="add-to-cart-btn" onclick="addToCart(${product.id})">Add</button>
-                                    </div>
+        const section = document.getElementById('productsSection');
+        section.innerHTML = `
+            <div class="container">
+                <h1>${appState.selectedCategory === 'all' ? 'All Products' : appState.selectedCategory.charAt(0).toUpperCase() + appState.selectedCategory.slice(1)}</h1>
+                
+                <div class="products-grid">
+                    ${products.map(product => `
+                        <div class="product-card">
+                            <div class="product-image">${product.emoji}</div>
+                            <div class="product-info">
+                                <div class="product-name">${product.name}</div>
+                                <div class="product-price">₹${product.price}</div>
+                                <div class="product-actions">
+                                    <button class="view-details-btn" onclick="viewProduct(${product.id})">View</button>
+                                    <button class="add-to-cart-btn" onclick="addToCart(${product.id})">Add</button>
                                 </div>
                             </div>
-                        `).join('')}
-                   </div>`
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }
+
+    function viewProduct(productId) {
+        appState.currentProduct = appState.products.find(p => p.id === productId);
+        showPage('productDetail');
+    }
+
+    function renderProductDetail() {
+        if (!appState.currentProduct) return;
+        const product = appState.currentProduct;
+        const section = document.getElementById('productDetailSection');
+        
+        section.innerHTML = `
+            <div class="container">
+                <button class="btn-secondary" onclick="showPage('products')" style="margin-bottom: 1rem;">← Back</button>
+                <div class="product-detail">
+                    <div class="product-detail-image">${product.emoji}</div>
+                    <div class="product-detail-info">
+                        <h1>${product.name}</h1>
+                        <div class="product-detail-price">₹${product.price}</div>
+                        <div class="product-detail-desc">${product.desc}</div>
+                        
+                        <div class="product-detail-actions">
+                            <input type="number" id="detailQuantity" class="quantity-input" value="1" min="1" max="100">
+                            <button class="btn-primary" onclick="addToCartFromDetail()">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function addToCartFromDetail() {
+        const qty = parseInt(document.getElementById('detailQuantity').value);
+        for (let i = 0; i < qty; i++) {
+            addToCart(appState.currentProduct.id);
+        }
+        showPage('cart');
+    }
+
+    // Cart Functions
+    function addToCart(productId) {
+        const product = appState.products.find(p => p.id === productId);
+        const existing = appState.cart.find(item => item.id === productId);
+        
+        if (existing) {
+            existing.qty += 1;
+        } else {
+            appState.cart.push({...product, qty: 1});
+        }
+        
+        saveToLocalStorage();
+        updateCartCount();
+        showNotification('Added to cart!');
+    }
+
+    function removeFromCart(productId) {
+        appState.cart = appState.cart.filter(item => item.id !== productId);
+        saveToLocalStorage();
+        updateCartCount();
+        renderCart();
+    }
+
+    function updateQuantity(productId, delta) {
+        const item = appState.cart.find(i => i.id === productId);
+        if (item) {
+            item.qty += delta;
+            if (item.qty <= 0) {
+                removeFromCart(productId);
+            } else {
+                saveToLocalStorage();
+                renderCart();
             }
-        </div>
-    `;
+        }
+    }
 
-    // ✅ ONLY show section, do NOT re-render products
-    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-    document.getElementById('productsSection').classList.add('active');
+    function updateCartCount() {
+        const count = appState.cart.reduce((sum, item) => sum + item.qty, 0);
+        const cartCount = document.querySelector('.cart-count');
+        if (cartCount) {
+            cartCount.textContent = count;
+            cartCount.style.display = count > 0 ? 'flex' : 'none';
+        }
+    }
 
-    // nav active
-    document.querySelectorAll('.nav-menu button').forEach(b => b.classList.remove('active'));
-    const btn = document.querySelector('[data-page="products"]');
-    if (btn) btn.classList.add('active');
+    function renderCart() {
+        const section = document.getElementById('cartSection');
+        const total = appState.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
-    appState.currentPage = 'products';
+        if (appState.cart.length === 0) {
+            section.innerHTML = `
+                <div class="container">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🛒</div>
+                        <h2>Your cart is empty</h2>
+                        <p>Add items to get started!</p>
+                        <button class="btn-primary" onclick="showPage('home')" style="margin-top: 1rem;">Continue Shopping</button>
+                    </div>
+                </div>
+            `;
+            return;
+        }
+
+        section.innerHTML = `
+            <div class="container">
+                <h1>Shopping Cart</h1>
+                <div class="cart-items-list">
+                    ${appState.cart.map(item => `
+                        <div class="cart-item">
+                            <div style="font-size: 2rem; margin-right: 1rem;">${item.emoji}</div>
+                            <div class="cart-item-info">
+                                <div class="cart-item-name">${item.name}</div>
+                                <div class="cart-item-price">₹${item.price} each</div>
+                            </div>
+                            <div class="cart-item-actions">
+                                <div class="quantity-selector">
+                                    <button onclick="updateQuantity(${item.id}, -1)">−</button>
+                                    <span>${item.qty}</span>
+                                    <button onclick="updateQuantity(${item.id}, 1)">+</button>
+                                </div>
+                                <strong style="margin: 0 1rem;">₹${item.price * item.qty}</strong>
+                                <button class="remove-btn" onclick="removeFromCart(${item.id})">Remove</button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div class="cart-summary">
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span>₹${total}</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Delivery:</span>
+                        <span>₹0 (Free)</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total:</span>
+                        <span>₹${total}</span>
+                    </div>
+                    <button class="btn-primary" onclick="showPage('checkout')" style="width: 100%; margin-top: 1rem; padding: 1rem;">Proceed to Checkout</button>
+                </div>
+            </div>
+        `;
+    }
+
+    // Checkout Functions
+    function renderCheckout() {
+        const total = appState.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        const section = document.getElementById('checkoutSection');
+
+        section.innerHTML = `
+            <div class="container">
+                <h1>Checkout</h1>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <div>
+                        <h2>Delivery Address</h2>
+                        <form onsubmit="submitOrder(event)">
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" id="fullName" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                <input type="tel" id="phone" pattern="[0-9]{10}" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Address</label>
+                                <textarea id="address" required></textarea>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>City</label>
+                                    <input type="text" id="city" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Pincode</label>
+                                    <input type="text" id="pincode" value="${appState.pincode}" readonly>
+                                </div>
+                            </div>
+
+                            <h2 style="margin-top: 2rem;">Delivery Option</h2>
+                            <div class="form-group">
+                                <label>
+                                    <input type="radio" name="delivery" value="home" checked> Home Delivery
+                                </label>
+                                <label>
+                                    <input type="radio" name="delivery" value="store"> Store Pickup
+                                </label>
+                            </div>
+
+                            <button type="submit" class="btn-primary" style="width: 100%; padding: 1rem; margin-top: 1rem;">Place Order</button>
+                        </form>
+                    </div>
+
+                    <div>
+                        <h2>Order Summary</h2>
+                        <div class="cart-summary">
+                            ${appState.cart.map(item => `
+                                <div class="summary-row">
+                                    <span>${item.name} x${item.qty}</span>
+                                    <span>₹${item.price * item.qty}</span>
+                                </div>
+                            `).join('')}
+                            <div class="summary-row total">
+                                <span>Total Amount</span>
+                                <span>₹${total}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function submitOrder(event) {
+        event.preventDefault();
+        
+        const name = document.getElementById('fullName').value;
+        const phone = document.getElementById('phone').value;
+        const address = document.getElementById('address').value;
+        const city = document.getElementById('city').value;
+        const delivery = document.querySelector('input[name="delivery"]:checked').value;
+
+        const order = {
+            id: 'ORD' + Date.now(),
+            date: new Date().toLocaleDateString(),
+            items: appState.cart,
+            total: appState.cart.reduce((sum, item) => sum + (item.price * item.qty), 0),
+            status: 'processing',
+            customer: { name, phone, address, city, delivery }
+        };
+
+        let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+        orders.push(order);
+        localStorage.setItem('orders', JSON.stringify(orders));
+
+        appState.cart = [];
+        saveToLocalStorage();
+        updateCartCount();
+
+        showNotification('Order placed successfully!');
+        setTimeout(() => showPage('orders'), 1000);
+    }
+
+    // Account Functions
+    function renderAccount() {
+        const section = document.getElementById('accountSection');
+        section.innerHTML = `
+            <div class="container">
+                <h1>My Account</h1>
+                <div style="background: white; border-radius: 8px; padding: 2rem; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);">
+                    <h2 style="margin-bottom: 1rem;">Profile Information</h2>
+                    <form onsubmit="updateProfile(event)">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="accountName" value="${appState.user?.name || ''}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="accountEmail" value="${appState.user?.email || ''}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <input type="tel" id="accountPhone" value="${appState.user?.phone || ''}" pattern="[0-9]{10}" required>
+                        </div>
+                        <button type="submit" class="btn-primary">Save Changes</button>
+                    </form>
+
+                    <h2 style="margin-top: 2rem; margin-bottom: 1rem;">Saved Addresses</h2>
+                    <div id="savedAddresses" style="background: #f5f5f5; padding: 1rem; border-radius: 4px;">
+                        <p>No saved addresses yet.</p>
+                    </div>
+
+                    <button class="btn-secondary" style="margin-top: 1rem;" onclick="logout()">Logout</button>
+                </div>
+            </div>
+        `;
+    }
+
+    function updateProfile(event) {
+        event.preventDefault();
+        appState.user = {
+            name: document.getElementById('accountName').value,
+            email: document.getElementById('accountEmail').value,
+            phone: document.getElementById('accountPhone').value
+        };
+        saveToLocalStorage();
+        showNotification('Profile updated!');
+    }
+
+    function logout() {
+        appState.user = null;
+        saveToLocalStorage();
+        showPage('home');
+        showNotification('Logged out!');
+    }
+
+    // Orders Functions
+    function renderOrders() {
+        const section = document.getElementById('ordersSection');
+        const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+
+        if (orders.length === 0) {
+            section.innerHTML = `
+                <div class="container">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📦</div>
+                        <h2>No orders yet</h2>
+                        <p>Start shopping to place an order!</p>
+                        <button class="btn-primary" onclick="showPage('home')" style="margin-top: 1rem;">Continue Shopping</button>
+                    </div>
+                </div>
+            `;
+            return;
+        }
+
+        section.innerHTML = `
+            <div class="container">
+                <h1>My Orders</h1>
+                ${orders.reverse().map(order => `
+                    <div class="order-card">
+                        <div class="order-header">
+                            <div>
+                                <div class="order-id">${order.id}</div>
+                                <div style="color: #666; font-size: 0.9rem;">Ordered on ${order.date}</div>
+                            </div>
+                            <span class="order-status status-${order.status}">${order.status.charAt(0).toUpperCase() + order.status.slice(1)}</span>
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            ${order.items.map(item => `
+                                <div style="display: flex; justify-content: space-between; padding: 0.5rem 0;">
+                                    <span>${item.name} x${item.qty}</span>
+                                    <span>₹${item.price * item.qty}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div style="border-top: 1px solid #eee; padding-top: 1rem; font-weight: bold; display: flex; justify-content: space-between;">
+                            <span>Total:</span>
+                            <span>₹${order.total}</span>
+                        </div>
+                        <div style="margin-top: 1rem; font-size: 0.9rem; color: #666;">
+                            Delivery to: ${order.customer.address}, ${order.customer.city}
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    }
+
+    // Search Function
+    function search() {
+const query = document.getElementById('searchInput').value.trim().toLowerCase();
+if (!query) return;
+
+appState.searchQuery = query;
+
+const filtered = appState.products.filter(p =>
+    p.name.toLowerCase().includes(query)
+);
+
+const section = document.getElementById('productsSection');
+
+section.innerHTML = `
+    <div class="container">
+        <h1>Search Results for "${query}"</h1>
+
+        ${
+            filtered.length === 0
+            ? `<div class="empty-state">
+                    <div class="empty-state-icon">🔍</div>
+                    <h2>No products found</h2>
+                    <p>Try a different keyword</p>
+               </div>`
+            : `<div class="products-grid">
+                    ${filtered.map(product => `
+                        <div class="product-card">
+                            <div class="product-image">${product.emoji}</div>
+                            <div class="product-info">
+                                <div class="product-name">${product.name}</div>
+                                <div class="product-price">₹${product.price}</div>
+                                <div class="product-actions">
+                                    <button class="view-details-btn" onclick="viewProduct(${product.id})">View</button>
+                                    <button class="add-to-cart-btn" onclick="addToCart(${product.id})">Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+               </div>`
+        }
+    </div>
+`;
+
+// ✅ ONLY show section, do NOT re-render products
+document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+document.getElementById('productsSection').classList.add('active');
+
+// nav active
+document.querySelectorAll('.nav-menu button').forEach(b => b.classList.remove('active'));
+const btn = document.querySelector('[data-page="products"]');
+if (btn) btn.classList.add('active');
+
+appState.currentPage = 'products';
 }
 
 
-        // Cart Icon Click
-        function goToCart() {
-            showPage('cart');
-        }
+    // Cart Icon Click
+    function goToCart() {
+        showPage('cart');
+    }
 
-        // Notification
-        function showNotification(message) {
-            const notif = document.createElement('div');
-            notif.style.cssText = `
-                position: fixed;
-                top: 80px;
-                right: 20px;
-                background: #34a853;
-                color: white;
-                padding: 1rem 1.5rem;
-                border-radius: 4px;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-                z-index: 2000;
-                animation: slideIn 0.3s ease-out;
-            `;
-            notif.textContent = message;
-            document.body.appendChild(notif);
-
-            setTimeout(() => notif.remove(), 3000);
-        }
-
-        // Add animation
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideIn {
-                from { transform: translateX(400px); opacity: 0; }
-                to { transform: translateX(0); opacity: 1; }
-            }
+    // Notification
+    function showNotification(message) {
+        const notif = document.createElement('div');
+        notif.style.cssText = `
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: #34a853;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            z-index: 2000;
+            animation: slideIn 0.3s ease-out;
         `;
-        document.head.appendChild(style);
-    </script>
+        notif.textContent = message;
+        document.body.appendChild(notif);
+
+        setTimeout(() => notif.remove(), 3000);
+    }
+
+    // Add animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideIn {
+            from { transform: translateX(400px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    `;
+    document.head.appendChild(style);
+</script>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="header-content">
-            <div class="logo" onclick="showPage('home')">🛒 GroceryMart</div>
-            <div class="header-actions">
-                <div class="pincode-display" onclick="changePincode()">📍 Loading...</div>
-                <div class="cart-icon" onclick="goToCart()">
-                    🛒
-                    <div class="cart-count" style="display: none;">0</div>
-                </div>
+<!-- Header -->
+<header>
+    <div class="header-content">
+        <div class="logo" onclick="showPage('home')">🛒 GroceryMart</div>
+        <div class="header-actions">
+            <div class="pincode-display" onclick="changePincode()">📍 Loading...</div>
+            <div class="cart-icon" onclick="goToCart()">
+                🛒
+                <div class="cart-count" style="display: none;">0</div>
             </div>
-        </div>
-    </header>
-
-    <!-- Navigation -->
-    <nav>
-        <ul class="nav-menu">
-            <li><button data-page="home" onclick="showPage('home')" class="active">Home</button></li>
-            <li><button data-page="products" onclick="showPage('products')">Shop</button></li>
-            <li><button data-page="cart" onclick="showPage('cart')">Cart</button></li>
-            <li><button data-page="account" onclick="showPage('account')">Account</button></li>
-            <li><button data-page="orders" onclick="showPage('orders')">Orders</button></li>
-        </ul>
-    </nav>
-
-    <!-- Search Bar -->
-    <div class="search-container">
-        <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="Search for products..." onkeypress="if(event.key === 'Enter') search()">
-            <button onclick="search()">Search</button>
         </div>
     </div>
+</header>
 
-    <!-- Home Section -->
-    <section id="homeSection">
-        <div class="container" id="homeContent">
-            <div class="empty-state">Loading...</div>
+<!-- Navigation -->
+<nav>
+    <ul class="nav-menu">
+        <li><button data-page="home" onclick="showPage('home')" class="active">Home</button></li>
+        <li><button data-page="products" onclick="showPage('products')">Shop</button></li>
+        <li><button data-page="cart" onclick="showPage('cart')">Cart</button></li>
+        <li><button data-page="account" onclick="showPage('account')">Account</button></li>
+        <li><button data-page="orders" onclick="showPage('orders')">Orders</button></li>
+    </ul>
+</nav>
+
+<!-- Search Bar -->
+<div class="search-container">
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search for products..." onkeypress="if(event.key === 'Enter') search()">
+        <button onclick="search()">Search</button>
+    </div>
+</div>
+
+<!-- Home Section -->
+<section id="homeSection">
+    <div class="container" id="homeContent">
+        <div class="empty-state">Loading...</div>
+    </div>
+</section>
+
+<!-- Products Section -->
+<section id="productsSection">
+    <div class="container">Loading...</div>
+</section>
+
+<!-- Product Detail Section -->
+<section id="productDetailSection">
+    <div class="container">Loading...</div>
+</section>
+
+<!-- Cart Section -->
+<section id="cartSection">
+    <div class="container">Loading...</div>
+</section>
+
+<!-- Checkout Section -->
+<section id="checkoutSection">
+    <div class="container">Loading...</div>
+</section>
+
+<!-- Account Section -->
+<section id="accountSection">
+    <div class="container">Loading...</div>
+</section>
+
+<!-- Orders Section -->
+<section id="ordersSection">
+    <div class="container">Loading...</div>
+</section>
+
+<!-- Pincode Modal -->
+<div id="pincodeModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span>Select Delivery Location</span>
+            <button class="close-btn" onclick="closeModal('pincodeModal')">×</button>
         </div>
-    </section>
-
-    <!-- Products Section -->
-    <section id="productsSection">
-        <div class="container">Loading...</div>
-    </section>
-
-    <!-- Product Detail Section -->
-    <section id="productDetailSection">
-        <div class="container">Loading...</div>
-    </section>
-
-    <!-- Cart Section -->
-    <section id="cartSection">
-        <div class="container">Loading...</div>
-    </section>
-
-    <!-- Checkout Section -->
-    <section id="checkoutSection">
-        <div class="container">Loading...</div>
-    </section>
-
-    <!-- Account Section -->
-    <section id="accountSection">
-        <div class="container">Loading...</div>
-    </section>
-
-    <!-- Orders Section -->
-    <section id="ordersSection">
-        <div class="container">Loading...</div>
-    </section>
-
-    <!-- Pincode Modal -->
-    <div id="pincodeModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span>Select Delivery Location</span>
-                <button class="close-btn" onclick="closeModal('pincodeModal')">×</button>
+        <form class="pincode-form" onsubmit="setPincode(); return false;">
+            <input 
+                type="text" 
+                id="pincodeInput" 
+                placeholder="Enter 6-digit pincode" 
+                maxlength="6" 
+                pattern="[0-9]{6}"
+                required
+            >
+            <div style="font-size: 0.9rem; color: #666; margin: 0.5rem 0;">
+                Try: 110001, 400001, 560001, 800001
             </div>
-            <form class="pincode-form" onsubmit="setPincode(); return false;">
-                <input 
-                    type="text" 
-                    id="pincodeInput" 
-                    placeholder="Enter 6-digit pincode" 
-                    maxlength="6" 
-                    pattern="[0-9]{6}"
-                    required
-                >
-                <div style="font-size: 0.9rem; color: #666; margin: 0.5rem 0;">
-                    Try: 110001, 400001, 560001, 800001
-                </div>
-                <button type="submit" class="btn-primary">Continue</button>
-            </form>
+            <button type="submit" class="btn-primary">Continue</button>
+        </form>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer>
+    <div class="footer-content">
+        <div class="footer-section">
+            <h3>About Us</h3>
+            <ul>
+                <li><a href="#" onclick="event.preventDefault(); alert('About GroceryMart - Your trusted online grocery store.');">Who We Are</a></li>
+                <li><a href="#" onclick="event.preventDefault(); alert('We deliver fresh groceries to your doorstep.');">Our Mission</a></li>
+                <li><a href="#" onclick="event.preventDefault(); alert('Founded in 2024');">Our Story</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h3>Quick Links</h3>
+            <ul>
+                <li><a href="#" onclick="event.preventDefault(); showPage('home');">Home</a></li>
+                <li><a href="#" onclick="event.preventDefault(); showPage('products');">Shop</a></li>
+                <li><a href="#" onclick="event.preventDefault(); showPage('orders');">Orders</a></li>
+                <li><a href="#" onclick="event.preventDefault(); showPage('account');">Account</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h3>Policies</h3>
+            <ul>
+                <li><a href="#" onclick="event.preventDefault(); alert('Terms: Use our service responsibly and legally.');">Terms & Conditions</a></li>
+                <li><a href="#" onclick="event.preventDefault(); alert('Privacy: We protect your personal information.');">Privacy Policy</a></li>
+                <li><a href="#" onclick="event.preventDefault(); alert('Refund: 7 days money-back guarantee.');">Return Policy</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h3>Contact</h3>
+            <ul>
+                <li><a href="tel:+91-1234567890">📞 +91-1234567890</a></li>
+                <li><a href="mailto:support@grocerymart.com">✉️ support@grocerymart.com</a></li>
+                <li><a href="#" onclick="event.preventDefault(); alert('Address: 123 Market Street, Delhi');">📍 Delhi, India</a></li>
+            </ul>
         </div>
     </div>
-
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>About Us</h3>
-                <ul>
-                    <li><a href="#" onclick="event.preventDefault(); alert('About GroceryMart - Your trusted online grocery store.');">Who We Are</a></li>
-                    <li><a href="#" onclick="event.preventDefault(); alert('We deliver fresh groceries to your doorstep.');">Our Mission</a></li>
-                    <li><a href="#" onclick="event.preventDefault(); alert('Founded in 2024');">Our Story</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Quick Links</h3>
-                <ul>
-                    <li><a href="#" onclick="event.preventDefault(); showPage('home');">Home</a></li>
-                    <li><a href="#" onclick="event.preventDefault(); showPage('products');">Shop</a></li>
-                    <li><a href="#" onclick="event.preventDefault(); showPage('orders');">Orders</a></li>
-                    <li><a href="#" onclick="event.preventDefault(); showPage('account');">Account</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Policies</h3>
-                <ul>
-                    <li><a href="#" onclick="event.preventDefault(); alert('Terms: Use our service responsibly and legally.');">Terms & Conditions</a></li>
-                    <li><a href="#" onclick="event.preventDefault(); alert('Privacy: We protect your personal information.');">Privacy Policy</a></li>
-                    <li><a href="#" onclick="event.preventDefault(); alert('Refund: 7 days money-back guarantee.');">Return Policy</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Contact</h3>
-                <ul>
-                    <li><a href="tel:+91-1234567890">📞 +91-1234567890</a></li>
-                    <li><a href="mailto:support@grocerymart.com">✉️ support@grocerymart.com</a></li>
-                    <li><a href="#" onclick="event.preventDefault(); alert('Address: 123 Market Street, Delhi');">📍 Delhi, India</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 GroceryMart. All rights reserved. | Made with ❤️</p>
-        </div>
-    </footer>
+    <div class="footer-bottom">
+        <p>&copy; 2024 GroceryMart. All rights reserved. | Made with ❤️</p>
+    </div>
+</footer>
 </body>
 </html>
