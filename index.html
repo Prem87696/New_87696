@@ -990,12 +990,15 @@ cursor: pointer;
     }
 
     function updatePincodeDisplay() {
-        const display = document.querySelector('.pincode-display');
-        if (display) {
-            display.textContent = `<img src="src/Location.png" width="20">  
- ${appState.pincode}`;
-        }
+    const display = document.querySelector('.pincode-display');
+    if (display) {
+        display.innerHTML = `
+            <img src="src/Location.png" width="20">
+            ${appState.pincode}
+        `;
     }
+}
+
 
     function changePincode() {
         showModal('pincodeModal');
