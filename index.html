@@ -41,7 +41,11 @@
         flex-wrap: wrap;
         gap: 1rem;
     }
-
+.container>div {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
     .logo {
         font-size: 1.8rem;
         font-weight: bold;
@@ -751,7 +755,10 @@ font-size: 1.2rem;
 font-weight: bold;
 cursor: pointer;
 }
-        .product-detail {
+   .container>div {
+    grid-template-columns: auto;
+}
+       .product-detail {
             grid-template-columns: 1fr;
         }
 
@@ -1274,7 +1281,7 @@ cursor: pointer;
         section.innerHTML = `
             <div class="container">
                 <h1>Checkout</h1>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <div style=" ">
                     <div>
                         <h2>Delivery Address</h2>
                         <form onsubmit="submitOrder(event)">
