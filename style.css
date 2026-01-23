@@ -117,7 +117,7 @@
    footer { background: #333; color: white; padding: 2rem 1rem; margin-top: 2rem; } 
    .footer-content { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-bottom: 2rem; } 
    .footer-section h3 { font-size: 1.1rem; margin-bottom: 1rem; } 
-   .footer-section ul { list-style: none; } 
+   .footer-section ul { list-style: none; padding: 0px;} 
    .footer-section ul li { margin-bottom: 0.5rem; }
    .footer-section a { color: #ccc; display: flex; align-items: center; text-decoration: none; transition: color 0.3s; } 
    .footer-section a:hover { color: white; } 
