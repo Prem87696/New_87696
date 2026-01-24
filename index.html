@@ -107,12 +107,18 @@
         ];
     }
 
-    // Check Pincode on Load
-    function checkPincode() {
-        if (!appState.pincode) {
-            showModal('pincodeModal');
-        } else {
+      // Simulate service availability check
+        const serviceableAreas = ['335702', '335703', '110003', '110004', '110005', '400001', '400002', '560001', '560002', '560003', '800001'];
+        const available = serviceableAreas.includes(pincode);
+
+        if (available) {
+            appState.pincode = pincode;
+            saveToLocalStorage();
             updatePincodeDisplay();
+            closeModal('pincodeModal');
+            renderHome();
+        } else {
+            alert('Service not available in this area. Try: 335702, 335703, 560001, 800001');
         }
     }
 
