@@ -135,7 +135,7 @@
       .product-detail { grid-template-columns: 1fr; } 
       .products-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); } 
       .header-content { text-align: center; } 
-      .nav-menu { flex-wrap: wrap; } 
+      .nav-menu { flex-wrap: wrap; padding: 0;} 
       .search-bar { flex-direction: column; } 
       .form-row { grid-template-columns: 1fr; } 
       .product-detail-actions { flex-direction: column; } 
