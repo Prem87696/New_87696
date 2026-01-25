@@ -163,25 +163,20 @@ function setPincode() {
 
     // Pincode Functions
     function setPincode() {
-        const input = document.getElementById('pincodeInput');
-        const pincode = input.value.trim();
-        
-        if (!/^\d{6}$/.test(pincode)) {
-            alert('Please enter a valid 6-digit pincode');
-            return;
-        }
-// Sirf 6 digit number check
-const isValidPincode = /^\d{6}$/.test(pincode);
+    const pincode = document.getElementById('pincodeInput').value.trim();
 
-if (isValidPincode) {
+    if (!/^\d{6}$/.test(pincode)) {
+        alert('Please enter a valid 6-digit pincode');
+        return;
+    }
+
     appState.pincode = pincode;
     saveToLocalStorage();
     updatePincodeDisplay();
     closeModal('pincodeModal');
     renderHome();
-} else {
-    alert('Please enter a valid 6 digit pincode');
 }
+
 
 
     function updatePincodeDisplay() {
