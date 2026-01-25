@@ -125,6 +125,7 @@
    .footer-bottom { text-align: center; border-top: 1px solid #555; padding-top: 1rem; color: #aaa; }
     /* Responsive */
    @media (max-width: 768px) { 
+      .cart { display: grid; overflow: hidden; border-radius: 11px; }
       .footer-content {  grid-template-columns: 1fr 1fr; }
       .logo { font-size: 1.2rem; font-weight: bold; cursor: pointer; } 
       .product-image img { height: 210px; } 
