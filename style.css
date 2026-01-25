@@ -62,7 +62,7 @@
     /* Offers Section */
     .offers-section { background: white; border-radius: 8px; padding: 1.5rem; margin: 1rem 0; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1); } 
    .offers-section h2 { font-size: 1.5rem; margin-bottom: 1rem; } 
-   .offers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; }
+   .offers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(225px, 1fr)); gap: 1rem; }
    .offer-card:nth-child(1) {background-image: url("src/Vegitables.jpg");} 
    .offer-card { background: linear-gradient(135deg, #fff9c4 0%, #ffe082 100%);background-repeat: no-repeat; background-size: cover; background-position: center; padding: 1rem; border-radius: 8px; text-align: center; } 
    .offer-card h3 { font-size: 1.1rem; margin-bottom: 0.5rem; } 
