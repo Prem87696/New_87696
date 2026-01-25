@@ -238,7 +238,7 @@ function setPincode() {
     const display = document.querySelector('.pincode-display');
     if (display) {
         display.innerHTML = `
-            <img src="src/Location.png" width="20">
+            <img src="src/Location.png" class="loca"width="20">
             ${appState.pincode}
         `;
     }
@@ -929,7 +929,7 @@ appState.currentPage = 'products';
             <ul>
                 <li><a href="tel:+91-1234567890">📞 +91-1234567890</a></li>
                 <li><a href="mailto:support@grocerymart.com">✉️ support@grocerymart.com</a></li>
-                <li><a href="#" onclick="event.preventDefault(); alert('Address: 123 Market Street, Delhi');"><img src="src/Location.png" width="20"> Delhi, India</a></li>
+                <li><a href="#" onclick="event.preventDefault(); alert('Address: 123 Market Street, Delhi');"><img src="src/Location.png" class="loca" width="20"> Delhi, India</a></li>
             </ul>
         </div>
     </div>
